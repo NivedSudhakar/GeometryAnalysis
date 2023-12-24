@@ -11,6 +11,8 @@ public class Master {
 
     public static Map<String, Double> CovalentRadii = new HashMap<>();
 
+    public static Map<String, Double> AtomMasses = new HashMap<>();
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Scanner input = new Scanner(System.in);
 
@@ -34,19 +36,22 @@ public class Master {
 
         Geometry geom = Geometry.getGeometry(formattedXyz);
         ArrayList<ArrayList<Integer>> bondGraph = BondLength.getBondGraph(geom, CovalentRadii);
-
         ArrayList<ArrayList<Double>> bonds = BondLength.getBonds(geom, bondGraph);
-
         System.out.println();
 
         System.out.println("Geometry: ");
-
         Geometry.printGeometry(geom);
-
         System.out.println();
 
         BondLength.printBonds(geom, bonds);
+        System.out.println();
 
+        ArrayList<ArrayList<Double>> angles = BondAngles.getAngles(geom, bondGraph);
+        BondAngles.printAngles(geom, angles);
+        System.out.println();
+
+        double[] com = COM.getCenterOfMass(geom, AtomMasses);
+        COM.printCenterOfMass(com);
         input.close();
     }
 
@@ -56,6 +61,14 @@ public class Master {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
                 CovalentRadii.put(values[0], Double.valueOf(values[1]));
+            }
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader("Data/AtomMasses.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                AtomMasses.put(values[0], Double.valueOf(values[1]));
             }
         }
     }

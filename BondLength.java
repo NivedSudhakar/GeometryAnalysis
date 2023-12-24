@@ -26,7 +26,7 @@ public class BondLength {
             for (int j = i + 1; j < n_atoms; j++) {
                 double cov_rad2 = (double) CovalentRadii.get(at_types[j]);
                 double thresh = bond_thresh * (cov_rad1 + cov_rad2);
-                double r12 = get_r12(coords[i],
+                double r12 = getDistance(coords[i],
                         coords[j]);
 
                 if (r12 < thresh) {
@@ -63,7 +63,7 @@ public class BondLength {
                 int a = bondGraph.get(i).get(j);
 
                 if (i < a) {
-                    double r12 = get_r12(coords[i], coords[a]);
+                    double r12 = getDistance(coords[i], coords[a]);
                     ArrayList<Double> temp = new ArrayList<Double>();
 
                     temp.add((double) i);
@@ -93,7 +93,7 @@ public class BondLength {
     }
 
     // calculate distance betwenn cartesian coordinates
-    public static double get_r12(double[] coords1, double[] coords2) {
+    public static double getDistance(double[] coords1, double[] coords2) {
         double r2 = 0.0;
         for (int i = 0; i < 3; i++) {
             r2 += Math.pow(Double.valueOf(coords2[i]) - Double.valueOf(coords1[i]), 2);
